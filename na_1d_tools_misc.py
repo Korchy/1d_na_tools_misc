@@ -26,7 +26,7 @@ bl_info = {
 class NA1DToolsMisc:
 
     @classmethod
-    def ubtriangle_modifier(cls, context):
+    def untriangle_modifier(cls, context):
         # remove the "Triangle" modifier from all selected objects
         for obj in context.selected_objects:
             triangulate_modifiers = [_modifier for _modifier in obj.modifiers if _modifier.type == 'TRIANGULATE']
@@ -46,7 +46,7 @@ class NA1DToolsMisc:
     def ui(layout, context):
         # ui panel
         layout.operator(
-            operator='na_1d_tools_misc.ubtriangle_modifier',
+            operator='na_1d_tools_misc.untriangle_modifier',
             icon='MOD_TRIANGULATE'
         )
         layout.operator(
@@ -56,13 +56,13 @@ class NA1DToolsMisc:
 
 # OPERATORS
 
-class NA_1D_Tools_Misc_Ubtriangle_Modifier(Operator):
-    bl_idname = 'na_1d_tools_misc.ubtriangle_modifier'
-    bl_label = 'Ubtriangle Modifier'
+class NA_1D_Tools_Misc_Untriangle_Modifier(Operator):
+    bl_idname = 'na_1d_tools_misc.untriangle_modifier'
+    bl_label = 'Untriangle Modifier'
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        NA1DToolsMisc.ubtriangle_modifier(
+        NA1DToolsMisc.untriangle_modifier(
             context=context
         )
         return {'FINISHED'}
@@ -97,7 +97,7 @@ class NA_1D_Tools_Misc_PT_panel(Panel):
 # REGISTER
 
 def register(ui=True):
-    register_class(NA_1D_Tools_Misc_Ubtriangle_Modifier)
+    register_class(NA_1D_Tools_Misc_Untriangle_Modifier)
     register_class(NA_1D_Tools_Misc_Multiclear_Normal_Data)
     if ui:
         register_class(NA_1D_Tools_Misc_PT_panel)
@@ -107,7 +107,7 @@ def unregister(ui=True):
     if ui:
         unregister_class(NA_1D_Tools_Misc_PT_panel)
     unregister_class(NA_1D_Tools_Misc_Multiclear_Normal_Data)
-    unregister_class(NA_1D_Tools_Misc_Ubtriangle_Modifier)
+    unregister_class(NA_1D_Tools_Misc_Untriangle_Modifier)
 
 
 if __name__ == '__main__':
