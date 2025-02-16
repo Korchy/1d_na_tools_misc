@@ -2,6 +2,8 @@
 
 Some additional separate functions for NA 1D Tools
 
+Integrated to the "NA 1D Tools"
+
 **Ubtriangle Modifier**
 
 Remove all the "Triangulate" modifiers from all selected objects.
