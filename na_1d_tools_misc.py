@@ -9,7 +9,7 @@ import bpy
 from bpy.props import FloatProperty
 from bpy.types import Operator, Panel, WindowManager
 from bpy.utils import register_class, unregister_class
-from math import radians
+from math import pi, radians
 
 bl_info = {
     "name": "NA 1D Tools Misc",
@@ -62,8 +62,10 @@ class NA1DToolsMisc:
         # check face angles for all edges
         for edge in bm.edges:
             face_angle_rad = edge.calc_face_angle(None) # None returns for non-manifold edges
-            if face_angle_rad and face_angle_rad > radians(angle_deg):
-                edge.select = True
+            if face_angle_rad:
+                face_angle_rad = pi - face_angle_rad    # real angle between 2 faces
+                if face_angle_rad > radians(angle_deg):
+                    edge.select = True
         # save changed data to mesh
         bm.to_mesh(context.active_object.data)
         bm.free()
