@@ -59,13 +59,30 @@ class NA1DToolsMisc:
         bm.from_mesh(context.active_object.data)
         # deselect
         cls._deselect_all_bm(bm=bm)
+        # # update normals because calc_face_angle_signed() calcs angle between two faces normals
+        # bm.normal_update()
         # check face angles for all edges
         for edge in bm.edges:
-            face_angle_rad = edge.calc_face_angle(None) # None returns for non-manifold edges
-            if face_angle_rad:
-                face_angle_rad = pi - face_angle_rad    # real angle between 2 faces
-                if face_angle_rad > radians(angle_deg):
-                    edge.select = True
+            if len(edge.link_faces) != 2:
+                continue
+            face1, face2 = edge.link_faces[0], edge.link_faces[1]
+            v1, v2 = edge.verts[0].co, edge.verts[1].co
+            edge_dir = (v2 - v1).normalized()
+            # help function to get vector which is perpendicular the edge and lies on the face
+            def vec_on_face_perpendicular_to_edge(face, edge, vert):
+                face_center = face.calc_center_median()
+                vec_to_center = face_center - vert
+                perp_vec = vec_to_center - vec_to_center.project(edge)
+                return perp_vec.normalized()
+            # for each face get vector which lies on face and perpendicular the edge
+            wing1 = vec_on_face_perpendicular_to_edge(face1, edge_dir, v1)
+            wing2 = vec_on_face_perpendicular_to_edge(face2, edge_dir, v1)
+            # get min angle between perpendicular vectors on faces
+            angle = wing1.angle(wing2)
+            angle = angle if angle < radians(180) else (radians(360) - angle)
+            # check condition
+            if angle > radians(angle_deg):
+                edge.select = True
         # save changed data to mesh
         bm.to_mesh(context.active_object.data)
         bm.free()
