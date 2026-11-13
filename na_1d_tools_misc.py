@@ -46,7 +46,7 @@ class NA1DToolsMisc:
         context.scene.objects.active = active_object
 
     @classmethod
-    def filter_face_angles(cls, context, angle_deg=70.0):
+    def filter_face_angles(cls, context, angle_deg=70.0, threshold=0.01):
         # select all edges which face angle is grater than required
         # switch to edge select mode
         context.tool_settings.mesh_select_mode = (False, True, False)
@@ -81,7 +81,7 @@ class NA1DToolsMisc:
             angle = wing1.angle(wing2)
             angle = angle if angle < radians(180) else (radians(360) - angle)
             # check condition
-            if angle > radians(angle_deg):
+            if angle < (pi - radians(angle_deg)) + threshold:
                 edge.select = True
         # save changed data to mesh
         bm.to_mesh(context.active_object.data)
