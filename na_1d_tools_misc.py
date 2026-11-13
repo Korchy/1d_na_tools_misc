@@ -115,10 +115,11 @@ class NA1DToolsMisc:
             operator='na_1d_tools_misc.filter_face_angles',
             icon='PREVIEW_RANGE'
         )
-        box.prop(
+        op = box.prop(
             data=context.window_manager,
             property='na_1d_tools_misc_prop_face_angle'
         )
+        op.face_angle = context.window_manager.na_1d_tools_misc_prop_face_angle
 
 # OPERATORS
 
