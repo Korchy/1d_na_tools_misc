@@ -111,15 +111,15 @@ class NA1DToolsMisc:
             icon='MOD_NORMALEDIT'
         )
         box = layout.box()
-        box.operator(
+        op = box.operator(
             operator='na_1d_tools_misc.filter_face_angles',
             icon='PREVIEW_RANGE'
         )
-        op = box.prop(
+        op.face_angle = context.window_manager.na_1d_tools_misc_prop_face_angle
+        box.prop(
             data=context.window_manager,
             property='na_1d_tools_misc_prop_face_angle'
         )
-        op.face_angle = context.window_manager.na_1d_tools_misc_prop_face_angle
 
 # OPERATORS
 
@@ -157,6 +157,7 @@ class NA_1D_Tools_Misc_Filter_Face_Angles(Operator):
     )
 
     def execute(self, context):
+        print(self.face_angle)
         NA1DToolsMisc.filter_face_angles(
             context=context,
             angle_deg=self.face_angle
